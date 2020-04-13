@@ -1,0 +1,105 @@
+C++ ile sıkıştırılmış dosya sifresi kurma programi
+
+
+Bunu yapmak icin linux terminali kullanicaz.
+Linux terminalinde
+  -- rar dosyasi acmak icin <unrar e -pSifre dosyaadi> komutunu kullaniyoruz
+Simdi kodlama kismina gelelim
+
+   >> ilk once kullanacagmiz kutuphaneleri programimiza dahil edelim.
+      -- #include <iostrem>
+          + iostream c++ ta input/output islemleri icin kullanilir
+      -- #include <cstdlib>
+          + cstdlib terminalde kod calistirma icin kullanilir.
+      -- #include <cstdio>
+          + cstdio burda bize rasgele karakterler uretecek.
+      -- int main() {
+          + kodlarimizi buraya yaziyoruz.
+          + simdi bize bi sifreli rar dosyasi lazim bunun icin ;
+             -- string dosyaAdi;
+                cout<<"\nLütfen dosyanizi belirtin : ";
+                cin>>dosyaAdi;
+          + simdi ise kac tane sifre denemesi yapicaz onu belirtiyoruz
+             -- int denemeSayisi;
+                cout<<"\nLütfen kac kez deneyeceginizi girin: ";
+                cin>>denemeSayisi;
+             ++ simdi deneyecegimiz sifrenin karakterlwrini belirtiyoz
+                -- string karakterler="abcdefghjsowyr8cmxn";
+             ++ Dosyamizi ve deneme sayisimizi belirttigimize gore bi sonraki isleme gecebiliriz
+              + Sifreleri surekli bi dongude deneyebilmemiz icin bize bi for dongusu lazim
+                -- for(int i=0;i<denemeSayisi;i++) {
+                + simdi deniyecgimiz sifreleri bi degiskene atiyoruz
+                   -- string sifre;
+                      + bu degisken for her donuste degisecek
+             ++ simdi sifrenin kac karakterli olacagini belirtmemiz lazim
+              teker teker 6,7,8 diye belirtebiluriz ama biz simdilik sadece 7 karakterli olacak sekilde belirtiyoruz
+               bunun icinde baska bi for dongusune ihtiyacagimiz var
+               tabi once karakter sayisini belirtelim
+                 -- string haneSayisi;
+                  -- cout<<"\nLutfen sifrenin hane sayisini girin :";
+                     cin>>haneSayisi;
+                 ++ simdi 2. for dongumuzu olusturabilirz
+                    --for(int j=0;j<haneSayisi;j++) {
+                _       ++ simdi burda sifremize basta belirtigimiz karakterli eklememiz lazim
+                        burda ise rand() fonsiyonu devreye giriyor
+                       -- sifre += karakterler[rand()%karakterler.size()];
+                       ++ bunuda tamamladigimiza gore simdi sifre deneme islemine geciyoruz
+                       ++ bunun icin oncelikle komut calistirma degiskenlerimizi ekliyelim
+                       -- char komut[100];
+                       -- int ek;
+                       -- ek = sprintf(komut,"unrar e -p%s %s",sifre.c_str, dosyaAdi);
+                       ++ simdi komut calistirmaya gecebiliriz.
+                       ++ bunun icin System(komut) metodunu kullanicaz
+                       ++ oncelikle komutumuzu bi degiskene aktariyoruz true yada false dondugunu ogrenmek icin komut hata verirse yani sifre yanlis gibi bi hata alirsak komut fakse donmus olacak
+                         -- int kontrol;
+                          -- kontrol= System(komut);
+                       ++ komutu calistirdigimiza gore kontrolunu saglayabiliriz
+                        ++ bunun icin if lazim bize
+                       --if(kontrol==EXIT_SUCCESS) {
+                         ++ eger komutumuz true donerse yani sifre bulunduysa
+                         -- cout<<"\nDogru sifre bulundu. "<<sifre<<endl;
+                         ++ dogru sifre bulunduysa programi kapatabiliriz bunun icinde break; kullancaz
+                          --break;
+                        ++ simdi eger komutumuz false donduyse sifreleri surekli ekrana basiyoruz(yanlis sifreleri)
+                        -- else {
+                            -- cout<<"\nSifre yanlis >> "<<sifre<<endl;
+
+
+     ++ evet programimiz bu kadardi asagida kodlarin tam halini vardir;
+
+
+        #include <iostream>
+        #include <cstdlib>
+        #include <cstdio>
+        int main() {
+                string dosyaAdi;
+                string karakterler="asffgkhljprueywwbxmmz9284";
+                cout<<"\n Dosya adini girin: ";
+                cin>>dosyaAdi;
+                int denemeSayisi;
+                cout<<"\nDeneme sayisi ni secin: ";
+                cin>>denemeSayisi;
+                int haneSayisi;
+                cout<<"\nSifreniz kac haneli olacak : ";
+                cin>>haneSayisi;
+                char komut[100];
+                int ek;
+                for(int i=0;i<denemeSayisi;i++) {
+                        string sifre;
+                        for(int j=0;j<haneSayisi;j++) {
+                                sifre += karakterler[rand()%karakterler.size()];
+                        }
+                        ek = sprintf(komut,"unrar e -p%s %s",sifre.c_str(), dosyaAdi);
+                        int kontrol;
+                        kontrol = System(komut);
+                        if(kontrol==EXIT_SUCCESS) {
+                                cout<<"\nDogru sifre bulundu >> "<<sifre<<endl;
+                                break;
+                        }
+                        else {
+                                cout<<"\nSifre yanlis >> "<<sifre<<endl;
+                        }
+                }
+        }
+
++++Kendinize iyi bakin....
